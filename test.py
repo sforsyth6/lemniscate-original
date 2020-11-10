@@ -75,7 +75,7 @@ def kNN(epoch, net, lemniscate, trainloader, testloader, K, sigma, recompute_mem
     if hasattr(trainloader.dataset, 'imgs'):
         trainLabels = torch.LongTensor([y for (p, y) in trainloader.dataset.imgs]).cuda()
     else:
-        trainLabels = torch.LongTensor(trainloader.dataset.train_labels).cuda()
+        trainLabels = torch.LongTensor(trainloader.dataset.targets).cuda()
     C = trainLabels.max() + 1
 
     if recompute_memory:
@@ -87,7 +87,7 @@ def kNN(epoch, net, lemniscate, trainloader, testloader, K, sigma, recompute_mem
             batchSize = inputs.size(0)
             features = net(inputs)
             trainFeatures[:, batch_idx*batchSize:batch_idx*batchSize+batchSize] = features.data.t()
-        trainLabels = torch.LongTensor(temploader.dataset.train_labels).cuda()
+        trainLabels = torch.LongTensor(temploader.dataset.targets).cuda()
         trainloader.dataset.transform = transform_bak
     
     top1 = 0.
